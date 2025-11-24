@@ -218,6 +218,12 @@
             margin-top: 5px;
             line-height: 1.4;
         }
+        .captured-image {
+            width: 100%;
+            border-radius: 6px;
+            margin-top: 15px;
+            border: 1px solid #444;
+        }
         #analyze-button {
             position: absolute;
             top: 10px;
@@ -386,6 +392,11 @@
             `;
         });
 
+        // Add captured image if available
+        if (data.captured_image) {
+            html += `<img src="${data.captured_image}" alt="Image capturée" class="captured-image">`;
+        }
+
         // Add reset button
         html += '<button id="reset-button">🗑️ Effacer</button>';
 
@@ -393,6 +404,11 @@
 
         // Attach reset button handler
         document.getElementById('reset-button').addEventListener('click', resetDetections);
+
+        // Re-enable analyze button
+        analyzeButton.disabled = false;
+        analyzeButton.classList.remove('analyzing');
+        analyzeButton.textContent = '🔍 Identifier les espèces';
     }
 
     function formatTimestamp(isoString) {
@@ -402,6 +418,11 @@
 
     function resetDetections() {
         detectionsDiv.innerHTML = '<div class="no-detection">Cliquer sur "Identifier les espèces" pour tenter de trouver leur nom</div>';
+
+        // Delete previous captures from server
+        if (ws && ws.readyState === WebSocket.OPEN) {
+            ws.send(JSON.stringify({ action: 'delete_captures' }));
+        }
     }
 
     // Analyze button functionality
@@ -409,6 +430,9 @@
 
     analyzeButton.addEventListener('click', () => {
         if (ws && ws.readyState === WebSocket.OPEN) {
+            // Delete previous captures before starting new analysis
+            ws.send(JSON.stringify({ action: 'delete_captures' }));
+
             // Disable button and show analyzing state
             analyzeButton.disabled = true;
             analyzeButton.classList.add('analyzing');

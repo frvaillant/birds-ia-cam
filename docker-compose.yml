@@ -18,6 +18,8 @@ services:
       - nginx-rtmp
     environment:
       - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+    volumes:
+      - ./captures:/app/captures
     network_mode: "service:nginx-rtmp"
 
   ffmpeg:
