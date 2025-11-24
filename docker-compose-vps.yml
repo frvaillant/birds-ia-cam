@@ -1,0 +1,23 @@
+services:
+  nginx-rtmp:
+    build: .
+    ports:
+      - "1935:1935"       # RTMP input from OBS (doit rester exposé pour OBS)
+      - "127.0.0.1:8081:8080"   # HLS - localhost only (port 8081 pour éviter conflit), nginx host fera le proxy
+      - "127.0.0.1:8766:8765"   # WebSocket - localhost only (port 8766 pour éviter conflit), nginx host fera le proxy
+    volumes:
+      - ./hls:/tmp/hls
+
+  bird-detector:
+    build:
+      context: .
+      dockerfile: Dockerfile.bird-detector
+    container_name: bird-detector
+    restart: unless-stopped
+    depends_on:
+      - nginx-rtmp
+    environment:
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+    volumes:
+      - ./captures:/app/captures
+    network_mode: "service:nginx-rtmp"
