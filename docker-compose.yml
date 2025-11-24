@@ -36,7 +36,7 @@ services:
       - -rtsp_transport
       - tcp
       - -i
-      - rtsp://${RTSP_USERNAME}:${RTSP_PASSWORD}@${RTSP_HOST}:${RTSP_PORT}/${RTSP_PATH}
+      - ${RTSP_URL}
       - -vf
       - setpts=PTS-STARTPTS
       - -af
