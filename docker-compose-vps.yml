@@ -1,6 +1,7 @@
 services:
   nginx-rtmp:
     build: .
+    restart: unless-stopped
     ports:
       - "1935:1935"       # RTMP input from OBS (doit rester exposé pour OBS)
       - "127.0.0.1:8081:8080"   # HLS - localhost only (port 8081 pour éviter conflit), nginx host fera le proxy
