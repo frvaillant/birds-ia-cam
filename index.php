@@ -217,7 +217,7 @@
         analyzeButton.textContent = '🔍 Identifier les espèces';
 
         if (data.error) {
-            detectionsDiv.innerHTML = `<div class="no-detection">Error: ${data.error}</div>`;
+            detectionsDiv.innerHTML = `<div class="no-detection">Error: ${data.error} - please retry</div>`;
             return;
         }
 
