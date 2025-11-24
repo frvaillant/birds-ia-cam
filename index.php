@@ -93,6 +93,7 @@
     let reconnectInterval = null;
     let wasConnected = false;
     let isReconnecting = false;
+    let isAnalyzing = false;
 
     function connectWebSocket() {
         // Prevent multiple simultaneous connection attempts
@@ -199,22 +200,38 @@
     }
 
     function displayDetections(data) {
+        // Ignore status messages (like delete confirmations)
+        if (data.status && !data.birds && !data.count) {
+            return;
+        }
+
+        // Mark analysis as complete
+        isAnalyzing = false;
+
+        // Re-enable analyze button
+        analyzeButton.disabled = false;
+        analyzeButton.classList.remove('analyzing');
+        analyzeButton.textContent = '🔍 Identifier les espèces';
+
         if (data.error) {
             detectionsDiv.innerHTML = `<div class="no-detection">Error: ${data.error}</div>`;
             return;
         }
 
+        // Check if no birds were found
         if (data.count === 0 || !data.birds || data.birds.length === 0) {
-            detectionsDiv.innerHTML = '<div class="no-detection">Aucun oiseau trouvé</div>';
+            let html = '<div class="no-detection">Aucun oiseau trouvé</div>';
             if (data.raw_response) {
-                detectionsDiv.innerHTML += `<div class="no-detection" style="margin-top: 10px; font-size: 11px;">${data.raw_response}</div>`;
+                html += `<div class="no-detection" style="margin-top: 10px; font-size: 11px;">${data.raw_response}</div>`;
             }
             if (data.timestamp) {
-                detectionsDiv.innerHTML += `<div class="timestamp">Last check: ${formatTimestamp(data.timestamp)}</div>`;
+                html += `<div class="timestamp">Last check: ${formatTimestamp(data.timestamp)}</div>`;
             }
+            detectionsDiv.innerHTML = html;
             return;
         }
 
+        // Birds were found - display them
         let html = '';
         data.birds.forEach((bird, index) => {
             // Map French confidence levels to CSS classes
@@ -256,11 +273,6 @@
 
         // Attach reset button handler
         document.getElementById('reset-button').addEventListener('click', resetDetections);
-
-        // Re-enable analyze button
-        analyzeButton.disabled = false;
-        analyzeButton.classList.remove('analyzing');
-        analyzeButton.textContent = '🔍 Identifier les espèces';
     }
 
     function formatTimestamp(isoString) {
@@ -282,6 +294,9 @@
 
     analyzeButton.addEventListener('click', () => {
         if (ws && ws.readyState === WebSocket.OPEN) {
+            // Mark analysis as started
+            isAnalyzing = true;
+
             // Delete previous captures before starting new analysis
             ws.send(JSON.stringify({ action: 'delete_captures' }));
 
@@ -290,7 +305,7 @@
             analyzeButton.classList.add('analyzing');
             analyzeButton.textContent = '🔄 Analyse en cours...';
 
-            detectionsDiv.innerHTML = '<div class="no-detection">Analyse en cours...</div>';
+            detectionsDiv.innerHTML = '<div class="analyzing-in-progress">Analyse en cours...</div>';
 
             // Send analyze request to backend
             ws.send(JSON.stringify({ action: 'analyze' }));
@@ -300,6 +315,7 @@
                 analyzeButton.disabled = false;
                 analyzeButton.classList.remove('analyzing');
                 analyzeButton.textContent = '🔍 Identifier les espèces';
+                isAnalyzing = false;
             }, 10000); // 10 second timeout
         } else {
             alert('Detection service is not connected');
