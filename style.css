@@ -32,7 +32,7 @@ video {
     background: rgba(0, 0, 0, 0.85);
     padding: 15px;
     border-radius: 8px;
-    max-width: 350px;
+    width: 350px;
     max-height: 80%;
     overflow-y: auto;
     font-size: 14px;
