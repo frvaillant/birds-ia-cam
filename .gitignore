@@ -1,1 +1,7 @@
 .env
+
+# HLS temporary files
+hls/*
+
+# Bird detection captures
+captures/*
