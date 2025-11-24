@@ -1,5 +1,7 @@
 .env
+.idea
 
+DEPLOYMENT-VPS.md
 # HLS temporary files
 hls/*
 
