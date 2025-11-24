@@ -2,9 +2,9 @@ services:
   nginx-rtmp:
     build: .
     ports:
-      - "1935:1935"
-      - "8080:8080"
-      - "8765:8765"
+      - "1935:1935"       # RTMP input from OBS (doit rester exposé pour OBS)
+      - "127.0.0.1:8080:8080"   # HLS - localhost only, nginx host fera le proxy
+      - "127.0.0.1:8765:8765"   # WebSocket - localhost only, nginx host fera le proxy
     volumes:
       - ./hls:/tmp/hls
 
@@ -20,48 +20,4 @@ services:
       - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
     volumes:
       - ./captures:/app/captures
-    network_mode: "service:nginx-rtmp"
-
-  ffmpeg:
-    image: linuxserver/ffmpeg:latest
-    container_name: ffmpeg-rtsp-relay
-    restart: unless-stopped
-    depends_on:
-      - nginx-rtmp
-    command:
-      - -fflags
-      - nobuffer+fastseek+flush_packets
-      - -flags
-      - low_delay
-      - -rtsp_transport
-      - tcp
-      - -i
-      - ${RTSP_URL}
-      - -vf
-      - setpts=PTS-STARTPTS
-      - -af
-      - asetpts=PTS-STARTPTS
-      - -c:v
-      - libx264
-      - -preset
-      - ultrafast
-      - -tune
-      - zerolatency
-      - -profile:v
-      - baseline
-      - -g
-      - "30"
-      - -sc_threshold
-      - "0"
-      - -c:a
-      - aac
-      - -ar
-      - "44100"
-      - -b:a
-      - "128k"
-      - -f
-      - flv
-      - -flvflags
-      - no_duration_filesize
-      - rtmp://nginx-rtmp:1935/live/camera
     network_mode: "service:nginx-rtmp"
