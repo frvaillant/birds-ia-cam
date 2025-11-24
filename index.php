@@ -38,7 +38,7 @@
 <script>
     // Stream vidéo
     const video = document.getElementById('video');
-    const streamUrl = "http://localhost:8080/live/camera/index.m3u8";
+    const streamUrl = "/live/camera/index.m3u8";
     const detectionsDiv = document.getElementById('detections');
     const statusDiv = document.getElementById('detection-status');
     const statusText = document.getElementById('status-text');
@@ -101,7 +101,10 @@
             return;
         }
 
-        ws = new WebSocket('ws://localhost:8765');
+        // Use relative path that will work both in HTTP and HTTPS
+        const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+        const wsHost = window.location.host;
+        ws = new WebSocket(`${wsProtocol}//${wsHost}/ws`);
 
         ws.onopen = () => {
             console.log('Connected to bird detection service');
