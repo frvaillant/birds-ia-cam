@@ -78,19 +78,13 @@ def draw_bounding_boxes(frame, birds):
         else:
             color = (0, 165, 255)  # Orange
 
-        # Draw rectangle
-        cv2.rectangle(annotated_frame, (x, y), (x + width, y + height), color, 3)
+        # Draw a filled circle at the center of the bounding box
+        circle_center = (x + width // 2, y + height // 2)
+        circle_radius = 25
+        cv2.circle(annotated_frame, circle_center, circle_radius, color, -1)
 
-        # Prepare label
-        species = bird.get('species', 'Inconnu')
-        label = f"{species}"
-
-        # Draw label background
-        (label_width, label_height), baseline = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.7, 2)
-        cv2.rectangle(annotated_frame, (x, y - label_height - 10), (x + label_width + 10, y), color, -1)
-
-        # Draw label text
-        cv2.putText(annotated_frame, label, (x + 5, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2)
+        # Add a white border to make it more visible
+        cv2.circle(annotated_frame, circle_center, circle_radius, (255, 255, 255), 2)
 
     return annotated_frame
 
@@ -116,12 +110,14 @@ async def analyze_frame_with_claude(frame_base64):
                             "type": "text",
                             "text": """Analyse cette image et identifie tous les oiseaux présents.
 
+IMPORTANT : N'dentifie que les oiseaux réels qui ont l'air vrais à l'image. Réagis comme un ornithologue professionnel. Si tu as un doute, ne dis rien. Tu peux en revanche, si tu es sur de la famille ou du genre de l'oiseau, répondre quelque chose comme "Rapace indeterminé" ou "Corvidés indéterminé".
+
 Pour chaque oiseau détecté, fournis :
 1. Nom de l'espèce (commun en français et scientifique)
 2. Niveau de confiance : "élevé", "moyen", ou "faible"
 3. Brève description des caractéristiques visuelles qui ont aidé à l'identifier
 4. Position approximative dans l'image : "gauche"/"centre"/"droite", "haut"/"milieu"/"bas"
-5. Coordonnées de la bounding box : position x,y du coin supérieur gauche et largeur/hauteur en pourcentages (0-100) de l'image
+5. Coordonnées de la bounding box : position x,y du coin supérieur gauche et largeur/hauteur en pourcentages (0-100) de la zone de l'image qui contient l'oiseau.
 
 Si aucun oiseau n'est visible, réponds avec : "Aucun oiseau détecté"
 
