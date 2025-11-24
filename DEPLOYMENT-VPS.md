@@ -104,13 +104,13 @@ ls -la
 
 ```bash
 # Construire et lancer
-docker-compose -f docker-compose.vps.yml up -d
+docker-compose -f docker-compose-vps.yml up -d
 
 # Vérifier que tout tourne
-docker-compose -f docker-compose.vps.yml ps
+docker-compose -f docker-compose-vps.yml ps
 
 # Voir les logs
-docker-compose -f docker-compose.vps.yml logs -f
+docker-compose -f docker-compose-vps.yml logs -f
 ```
 
 ### 2.5 Tester en local
@@ -131,7 +131,7 @@ curl -i -N -H "Connection: Upgrade" -H "Upgrade: websocket" http://localhost:876
 
 ```bash
 # Copier le fichier de config
-sudo cp ~/bird-detection/nginx-vps-config/birds.frvaillant.fr.conf /etc/nginx/sites-available/
+sudo cp nginx-vps-config/birds.frvaillant.fr.conf /etc/nginx/sites-available/
 
 # Créer le lien symbolique
 sudo ln -s /etc/nginx/sites-available/birds.frvaillant.fr.conf /etc/nginx/sites-enabled/
