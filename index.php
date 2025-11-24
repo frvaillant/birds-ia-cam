@@ -44,31 +44,123 @@
     const statusText = document.getElementById('status-text');
 
     // Initialize HLS video
-    if (Hls.isSupported()) {
-        const hls = new Hls();
-        hls.loadSource(streamUrl);
-        hls.attachMedia(video);
-        hls.on(Hls.Events.MANIFEST_PARSED, () => {
+    let hls;
+    let videoInitialized = false;
+
+    function initializeVideo() {
+        if (Hls.isSupported()) {
+            // Destroy previous instance if exists
+            if (hls) {
+                hls.destroy();
+            }
+
+            hls = new Hls();
+            hls.loadSource(streamUrl);
+            hls.attachMedia(video);
+            hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                video.play();
+                videoInitialized = true;
+            });
+            hls.on(Hls.Events.ERROR, (event, data) => {
+                if (data.fatal) {
+                    console.log('HLS fatal error, stream may have stopped');
+                    videoInitialized = false;
+                }
+            });
+        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+            video.src = streamUrl;
+            video.load();
             video.play();
-        });
-    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-        video.src = streamUrl;
-    } else {
-        alert("Votre navigateur ne supporte pas HLS.");
+            videoInitialized = true;
+        } else {
+            alert("Votre navigateur ne supporte pas HLS.");
+        }
     }
+
+    function reinitializeVideoIfNeeded() {
+        // Only reinitialize if video was previously working but may have stopped
+        if (videoInitialized && (video.paused || video.readyState < 2)) {
+            console.log('Reinitializing video stream after reconnection');
+            initializeVideo();
+        }
+    }
+
+    // Initialize video on page load
+    initializeVideo();
 
     // WebSocket connection for bird detections
     let ws;
-    let reconnectInterval;
+    let reconnectInterval = null;
+    let wasConnected = false;
+    let isReconnecting = false;
 
     function connectWebSocket() {
+        // Prevent multiple simultaneous connection attempts
+        if (ws && ws.readyState === WebSocket.CONNECTING) {
+            return;
+        }
+
         ws = new WebSocket('ws://localhost:8765');
 
         ws.onopen = () => {
             console.log('Connected to bird detection service');
             statusDiv.className = 'detection-status status-active';
             statusText.textContent = 'Detection Active';
-            clearInterval(reconnectInterval);
+
+            // Clear reconnection interval
+            if (reconnectInterval) {
+                clearInterval(reconnectInterval);
+                reconnectInterval = null;
+            }
+
+            const isReconnection = isReconnecting;
+            isReconnecting = false;
+            wasConnected = true;
+
+            // Reinitialize video stream after Docker restart (if it was a reconnection)
+            if (isReconnection) {
+                // Wait longer for HLS stream to be ready after Docker restart
+                let retryCount = 0;
+                const maxRetries = 5;
+
+                const tryReinitVideo = () => {
+                    retryCount++;
+                    console.log(`Attempting to reinitialize video (attempt ${retryCount}/${maxRetries})`);
+
+                    // Check if HLS stream is available before reinitializing
+                    fetch(streamUrl, { method: 'HEAD' })
+                        .then(response => {
+                            if (response.ok) {
+                                console.log('HLS stream is ready, reinitializing video');
+                                initializeVideo();
+                            } else {
+                                throw new Error('Stream not ready');
+                            }
+                        })
+                        .catch(error => {
+                            if (retryCount < maxRetries) {
+                                console.log('HLS stream not ready yet, retrying in 2 seconds...');
+                                setTimeout(tryReinitVideo, 2000);
+                            } else {
+                                console.log('Failed to reinitialize video after max retries');
+                            }
+                        });
+                };
+
+                setTimeout(tryReinitVideo, 2000);
+            }
+
+            // Re-enable detection toggle
+            const detectionToggle = document.getElementById('detection-toggle');
+            detectionToggle.disabled = false;
+
+            // Automatically turn on detection when service comes online
+            detectionToggle.checked = true;
+
+            // Show UI elements and reset detections message
+            document.getElementById('analyze-button').classList.remove('hidden');
+            document.getElementById('detection-overlay').classList.remove('hidden');
+            detectionsDiv.innerHTML = '<div class="no-detection">Cliquer sur "Identifier les espèces" pour tenter de trouver leur nom</div>';
         };
 
         ws.onmessage = (event) => {
@@ -85,11 +177,24 @@
             statusDiv.className = 'detection-status status-inactive';
             statusText.textContent = 'Detection Offline';
 
-            // Try to reconnect every 5 seconds
-            reconnectInterval = setInterval(() => {
-                console.log('Attempting to reconnect...');
-                connectWebSocket();
-            }, 5000);
+            // Only disable UI if we were previously connected
+            if (wasConnected) {
+                // Disable detection toggle and hide UI elements when offline
+                const detectionToggle = document.getElementById('detection-toggle');
+                detectionToggle.checked = false;
+                detectionToggle.disabled = true;
+                document.getElementById('analyze-button').classList.add('hidden');
+                document.getElementById('detection-overlay').classList.add('hidden');
+            }
+
+            // Try to reconnect every 5 seconds (only if not already reconnecting)
+            if (!isReconnecting) {
+                isReconnecting = true;
+                reconnectInterval = setInterval(() => {
+                    console.log('Attempting to reconnect...');
+                    connectWebSocket();
+                }, 5000);
+            }
         };
     }
 
