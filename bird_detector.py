@@ -268,25 +268,8 @@ async def handle_analyze_request(websocket, frame_base64=None):
         for bird in detection_result.get("birds", []):
             print(f"  - {bird.get('species')} ({bird.get('confidence')})")
 
-        # Draw bounding boxes on the frame
-        annotated_frame = draw_bounding_boxes(frame, detection_result.get("birds", []))
-
-        # Save annotated frame
-        annotated_filename = f"captures/user_{user_id}_annotated_{timestamp_str}.jpg"
-        cv.imwrite(annotated_filename, annotated_frame)
-        print(f"Annotated frame saved: {annotated_filename}")
-
-        # Track annotated file too
-        user_captures[websocket].append(annotated_filename)
-
-        # Convert annotated frame to base64
-        annotated_base64 = frame_to_base64(annotated_frame)
-        detection_result["captured_image"] = f"data:image/jpeg;base64,{annotated_base64}"
-        detection_result["annotated_filename"] = annotated_filename
-    else:
-        print("No birds detected")
-        # Use original frame if no birds detected
-        detection_result["captured_image"] = f"data:image/jpeg;base64,{frame_base64}"
+    # Always use original frame (no annotation)
+    detection_result["captured_image"] = f"data:image/jpeg;base64,{frame_base64}"
 
     # Add timestamp and metadata
     detection_result["timestamp"] = datetime.now().isoformat()
