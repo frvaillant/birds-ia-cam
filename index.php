@@ -240,6 +240,11 @@
         analyzeButton.classList.remove('analyzing');
         analyzeButton.textContent = '🔍 Identifier les espèces';
 
+        // Delete all captures after displaying results (whether birds found or not)
+        if (ws && ws.readyState === WebSocket.OPEN) {
+            ws.send(JSON.stringify({ action: 'delete_captures' }));
+        }
+
         if (data.error) {
             detectionsDiv.innerHTML = `<div class="no-detection">Error: ${data.error} - please retry</div>`;
             return;
