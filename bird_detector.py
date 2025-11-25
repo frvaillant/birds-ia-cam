@@ -116,10 +116,10 @@ GUIDE D'IDENTIFICATION - Espèces souvent confondues :
 
 MÉSANGES (attention aux détails !) :
 - Mésange charbonnière (Parus major) : bande ventrale noire LARGE (en tous cas visible) et continue du menton au bas-ventre, joues blanches éclatantes, grande taille (14-15cm), calotte noire brillante, le ventre a clairement des teintes jaunes et le dos, notamment dans le haut, des teintes vert/jaune/olive
-- Mésange noire (Periparus ater) : TACHE BLANCHE sur la NUQUE (derrière la tête) - c'est la clé !, bande ventrale noire fine ou ABSENTE mais généralement absente, plus petite (11cm), calotte noire mate, PAS DE JAUNE SUR LE VENTRE, dos à dominante clairement GRISE : on dirait un dos noir et blanc, pas de couleurs spécifique
+- Mésange noire (Periparus ater) : TACHE BLANCHE sur la NUQUE (derrière la tête) - c'est la clé !, bande ventrale noire fine ou ABSENTE mais généralement absente, plus petite (11cm), calotte noire mate, PAS DE JAUNE SUR LE VENTRE, dos à dominante clairement GRISE : on dirait un dos noir et blanc, pas de couleurs spécifique. Le noir du menton s'étend jusqu'à l'épaule.
 - Mésange bleue (Cyanistes caeruleus) : calotte bleue vif, ailes et queue bleues, joues blanches avec trait noir sur l'œil
 - Mésange huppée (Lophophanes cristatus) : HUPPE pointue noire et blanche très visible, dos brun/marron moyen et ventre brun/fauve clair
-- Mésange nonnette (Poecile palustris) : calotte noire mate, SANS bande nucale blanche, menton noir, joues blanches sales
+- Mésange nonnette (Poecile palustris) : calotte noire mate, SANS bande nucale blanche, menton noir, joues blanches sales. Le noir sou le menton reste sous le bec et ne s'étend pas jusqu'à l'aisselle
 - Si hésitation entre charbonnière et noire : cherche la tache nucale blanche (noire) ou la bande ventrale plus ou moins large (charbonnière)
 
 MOINEAUX :
