@@ -116,7 +116,7 @@ GUIDE D'IDENTIFICATION - Espèces souvent confondues :
 
 MÉSANGES (attention aux détails !) :
 - Mésange charbonnière (Parus major) : bande ventrale noire LARGE (en tous cas visible) et continue du menton au bas-ventre, joues blanches éclatantes, grande taille (14-15cm), calotte noire brillante, le ventre a clairement des teintes jaunes et le dos, notamment dans le haut, des teintes vert/jaune/olive
-- Mésange noire (Periparus ater) : TACHE BLANCHE sur la NUQUE (derrière la tête) - c'est la clé !, bande ventrale noire fine ou ABSENTE mais généralement absente, plus petite (11cm), calotte noire mate, PAS DE JAUNE SUR LE VENTRE, dos à dominante clairement GRISE : on dirait un dos noir et blanc, pas de couleurs spécifique. Le noir du menton s'étend jusqu'à l'épaule. Zone de noir sous lec importante.
+- Mésange noire (Periparus ater) : TACHE BLANCHE sur la NUQUE (derrière la tête), la mésange noire a TOUJOURS une barre blanche sur les ailes, bande ventrale noire fine ou ABSENTE mais généralement absente, plus petite (11cm), calotte noire mate, PAS DE JAUNE SUR LE VENTRE, dos à dominante clairement GRISE : on dirait un dos noir et blanc, pas de couleurs spécifique. Le noir du menton s'étend jusqu'à l'épaule. Zone de noir sous lec importante.
 - Mésange bleue (Cyanistes caeruleus) : calotte bleue vif, ailes et queue bleues, joues blanches avec trait noir sur l'œil
 - Mésange huppée (Lophophanes cristatus) : HUPPE pointue noire et blanche très visible, dos brun/marron moyen et ventre brun/fauve clair
 - Mésange nonnette (Poecile palustris) : la mésange nonnette n'a JAMAIS de barre blanche sur les ailes. calotte noire mate, SANS bande nucale blanche, menton noir (noir très restreint), joues blanches sales, le blanc allant jusqu'à la nuque. Le noir sous le bec reste sous le bec et ne s'étend pas jusqu'à l'épaule. Très peu de noir sous le bec. Couleur dominante du dos beigne/marron clair, ventre fauve clair/beige clair
@@ -216,23 +216,29 @@ Formate ta réponse en JSON uniquement, sans texte avant ou après :
             "timestamp": datetime.now().isoformat()
         }
 
-async def handle_analyze_request(websocket):
+async def handle_analyze_request(websocket, frame_base64=None):
     """Handle an analyze request from a client"""
     print(f"[{datetime.now().strftime('%H:%M:%S')}] Received analyze request")
 
-    # Capture frame
-    frame = capture_frame_from_stream()
+    # If no frame provided, capture from stream (fallback)
+    if frame_base64 is None:
+        frame = capture_frame_from_stream()
 
-    if frame is None:
-        error_response = {
-            "error": "Could not capture frame from stream",
-            "timestamp": datetime.now().isoformat()
-        }
-        await websocket.send(json.dumps(error_response))
-        return
+        if frame is None:
+            error_response = {
+                "error": "Could not capture frame from stream",
+                "timestamp": datetime.now().isoformat()
+            }
+            await websocket.send(json.dumps(error_response))
+            return
 
-    # Convert to base64
-    frame_base64 = frame_to_base64(frame)
+        # Convert to base64
+        frame_base64 = frame_to_base64(frame)
+    else:
+        # Decode base64 to OpenCV frame for saving and annotation
+        import numpy as np
+        nparr = np.frombuffer(base64.b64decode(frame_base64), np.uint8)
+        frame = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
 
     # Generate unique identifier for this user and capture
     user_id = id(websocket)
@@ -319,7 +325,9 @@ async def websocket_handler(websocket):
             try:
                 data = json.loads(message)
                 if data.get('action') == 'analyze':
-                    await handle_analyze_request(websocket)
+                    # Check if frame is provided in the message
+                    frame_base64 = data.get('frame')
+                    await handle_analyze_request(websocket, frame_base64)
                 elif data.get('action') == 'delete_captures':
                     await handle_delete_captures(websocket)
                     await websocket.send(json.dumps({"status": "deleted"}))
@@ -339,8 +347,13 @@ async def websocket_handler(websocket):
 
 async def main():
     """Start WebSocket server"""
-    # Start WebSocket server
-    ws_server = await websockets.serve(websocket_handler, "0.0.0.0", WEBSOCKET_PORT)
+    # Start WebSocket server with increased message size limit (10MB for base64 images)
+    ws_server = await websockets.serve(
+        websocket_handler,
+        "0.0.0.0",
+        WEBSOCKET_PORT,
+        max_size=10 * 1024 * 1024  # 10MB
+    )
     print(f"WebSocket server started on port {WEBSOCKET_PORT}")
     print("Waiting for analyze requests from clients...")
 

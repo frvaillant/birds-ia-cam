@@ -322,8 +322,28 @@
 
             detectionsDiv.innerHTML = '<div class="analyzing-in-progress">Analyse en cours...</div>';
 
-            // Send analyze request to backend
-            ws.send(JSON.stringify({ action: 'analyze' }));
+            // Capture frame from video element
+            const canvas = document.createElement('canvas');
+
+            // Resize to max 1280px width to reduce message size
+            const maxWidth = 1280;
+            const scale = Math.min(1, maxWidth / video.videoWidth);
+            canvas.width = video.videoWidth * scale;
+            canvas.height = video.videoHeight * scale;
+
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            // Convert canvas to base64 JPEG with reduced quality
+            const frameBase64 = canvas.toDataURL('image/jpeg', 0.8).split(',')[1];
+
+            console.log(`Sending frame: ${canvas.width}x${canvas.height}, size: ${(frameBase64.length / 1024).toFixed(0)}KB`);
+
+            // Send analyze request with captured frame to backend
+            ws.send(JSON.stringify({
+                action: 'analyze',
+                frame: frameBase64
+            }));
 
             // Re-enable button after response (timeout as backup)
             setTimeout(() => {
