@@ -263,9 +263,29 @@
             return;
         }
 
-        // Birds were found - display them
+        // Group birds by species
+        const birdsBySpecies = {};
+        data.birds.forEach(bird => {
+            const speciesKey = bird.species || 'Inconnu';
+            if (!birdsBySpecies[speciesKey]) {
+                birdsBySpecies[speciesKey] = {
+                    species: bird.species,
+                    scientific_name: bird.scientific_name,
+                    confidence: bird.confidence,
+                    description: bird.description,
+                    locations: [],
+                    count: 0
+                };
+            }
+            birdsBySpecies[speciesKey].count++;
+            if (bird.location) {
+                birdsBySpecies[speciesKey].locations.push(bird.location);
+            }
+        });
+
+        // Display grouped birds
         let html = '';
-        data.birds.forEach((bird, index) => {
+        Object.values(birdsBySpecies).forEach(birdGroup => {
             // Map French confidence levels to CSS classes
             const confidenceMap = {
                 'élevé': 'high',
@@ -275,20 +295,25 @@
                 'medium': 'medium',
                 'low': 'low'
             };
-            const confidenceKey = (bird.confidence || 'faible').toLowerCase();
+            const confidenceKey = (birdGroup.confidence || 'faible').toLowerCase();
             const confidenceClass = `confidence-${confidenceMap[confidenceKey] || 'low'}`;
+
+            // Format species name with count
+            const speciesDisplay = birdGroup.count > 1
+                ? `${birdGroup.count} ${birdGroup.species}s`
+                : birdGroup.species;
 
             html += `
                 <div class="bird-detection">
-                    <div class="bird-species">${bird.species || 'Inconnu'}</div>
-                    ${bird.scientific_name ? `<div class="bird-scientific">${bird.scientific_name}</div>` : ''}
+                    <div class="bird-species">${speciesDisplay || 'Inconnu'}</div>
+                    ${birdGroup.scientific_name ? `<div class="bird-scientific">${birdGroup.scientific_name}</div>` : ''}
                     <div class="bird-info">
                         <span class="confidence-badge ${confidenceClass}">
-                            ${(bird.confidence || 'faible').toUpperCase()}
+                            ${(birdGroup.confidence || 'faible').toUpperCase()}
                         </span>
                     </div>
-                    ${bird.location ? `<div class="bird-location">📍 ${bird.location}</div>` : ''}
-                    ${bird.description ? `<div class="bird-description">${bird.description}</div>` : ''}
+                    ${birdGroup.locations.length > 0 ? `<div class="bird-location">📍 ${birdGroup.locations.join(', ')}</div>` : ''}
+                    ${birdGroup.description ? `<div class="bird-description">${birdGroup.description}</div>` : ''}
                 </div>
             `;
         });
