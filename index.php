@@ -13,6 +13,18 @@
 
     <button id="analyze-button">🔍 Identifier les espèces</button>
 
+    <!-- Selection overlay for drawing rectangle -->
+    <div id="selection-overlay" class="hidden">
+        <canvas id="selection-canvas"></canvas>
+        <div id="selection-instructions">
+            Dessinez un rectangle autour de la zone à analyser
+            <div class="selection-buttons">
+                <button id="cancel-selection">Annuler</button>
+                <button id="validate-selection" disabled>Analyser</button>
+            </div>
+        </div>
+    </div>
+
     <div id="detection-overlay">
         <div class="overlay-title">🦅 Identification</div>
         <div id="detections">
@@ -304,57 +316,173 @@
         }
     }
 
+    // Selection overlay functionality
+    const selectionOverlay = document.getElementById('selection-overlay');
+    const selectionCanvas = document.getElementById('selection-canvas');
+    const selectionCtx = selectionCanvas.getContext('2d');
+    const cancelSelectionBtn = document.getElementById('cancel-selection');
+    const validateSelectionBtn = document.getElementById('validate-selection');
+
+    let capturedFrame = null;
+    let capturedFrameCanvas = null;
+    let isDrawing = false;
+    let startX, startY, currentX, currentY;
+    let selectedRect = null;
+
     // Analyze button functionality
     const analyzeButton = document.getElementById('analyze-button');
 
     analyzeButton.addEventListener('click', () => {
         if (ws && ws.readyState === WebSocket.OPEN) {
-            // Mark analysis as started
-            isAnalyzing = true;
-
             // Delete previous captures before starting new analysis
             ws.send(JSON.stringify({ action: 'delete_captures' }));
 
-            // Disable button and show analyzing state
-            analyzeButton.disabled = true;
-            analyzeButton.classList.add('analyzing');
-            analyzeButton.textContent = '🔄 Analyse en cours...';
-
-            detectionsDiv.innerHTML = '<div class="analyzing-in-progress">Analyse en cours...</div>';
-
             // Capture frame from video element
-            const canvas = document.createElement('canvas');
+            capturedFrameCanvas = document.createElement('canvas');
 
             // Resize to max 1280px width to reduce message size
             const maxWidth = 1280;
             const scale = Math.min(1, maxWidth / video.videoWidth);
-            canvas.width = video.videoWidth * scale;
-            canvas.height = video.videoHeight * scale;
+            capturedFrameCanvas.width = video.videoWidth * scale;
+            capturedFrameCanvas.height = video.videoHeight * scale;
 
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const ctx = capturedFrameCanvas.getContext('2d');
+            ctx.drawImage(video, 0, 0, capturedFrameCanvas.width, capturedFrameCanvas.height);
 
-            // Convert canvas to base64 JPEG with reduced quality
-            const frameBase64 = canvas.toDataURL('image/jpeg', 0.8).split(',')[1];
-
-            console.log(`Sending frame: ${canvas.width}x${canvas.height}, size: ${(frameBase64.length / 1024).toFixed(0)}KB`);
-
-            // Send analyze request with captured frame to backend
-            ws.send(JSON.stringify({
-                action: 'analyze',
-                frame: frameBase64
-            }));
-
-            // Re-enable button after response (timeout as backup)
-            setTimeout(() => {
-                analyzeButton.disabled = false;
-                analyzeButton.classList.remove('analyzing');
-                analyzeButton.textContent = '🔍 Identifier les espèces';
-                isAnalyzing = false;
-            }, 10000); // 10 second timeout
+            // Show selection overlay
+            showSelectionOverlay();
         } else {
             alert('Detection service is not connected');
         }
+    });
+
+    function showSelectionOverlay() {
+        // Setup canvas
+        const videoRect = video.getBoundingClientRect();
+        selectionCanvas.width = capturedFrameCanvas.width;
+        selectionCanvas.height = capturedFrameCanvas.height;
+
+        // Draw captured frame on selection canvas
+        selectionCtx.drawImage(capturedFrameCanvas, 0, 0);
+
+        // Show overlay
+        selectionOverlay.classList.remove('hidden');
+        selectedRect = null;
+        validateSelectionBtn.disabled = true;
+    }
+
+    function hideSelectionOverlay() {
+        selectionOverlay.classList.add('hidden');
+        capturedFrameCanvas = null;
+        selectedRect = null;
+    }
+
+    // Canvas drawing handlers
+    selectionCanvas.addEventListener('mousedown', (e) => {
+        const rect = selectionCanvas.getBoundingClientRect();
+        startX = (e.clientX - rect.left) * (selectionCanvas.width / rect.width);
+        startY = (e.clientY - rect.top) * (selectionCanvas.height / rect.height);
+        isDrawing = true;
+    });
+
+    selectionCanvas.addEventListener('mousemove', (e) => {
+        if (!isDrawing) return;
+
+        const rect = selectionCanvas.getBoundingClientRect();
+        currentX = (e.clientX - rect.left) * (selectionCanvas.width / rect.width);
+        currentY = (e.clientY - rect.top) * (selectionCanvas.height / rect.height);
+
+        // Redraw image
+        selectionCtx.clearRect(0, 0, selectionCanvas.width, selectionCanvas.height);
+        selectionCtx.drawImage(capturedFrameCanvas, 0, 0);
+
+        // Draw rectangle
+        selectionCtx.strokeStyle = '#4CAF50';
+        selectionCtx.lineWidth = 3;
+        selectionCtx.strokeRect(startX, startY, currentX - startX, currentY - startY);
+
+        // Draw semi-transparent overlay outside selection
+        selectionCtx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+        selectionCtx.fillRect(0, 0, selectionCanvas.width, selectionCanvas.height);
+        selectionCtx.clearRect(startX, startY, currentX - startX, currentY - startY);
+        selectionCtx.drawImage(capturedFrameCanvas, startX, startY, currentX - startX, currentY - startY,
+                              startX, startY, currentX - startX, currentY - startY);
+        selectionCtx.strokeRect(startX, startY, currentX - startX, currentY - startY);
+    });
+
+    selectionCanvas.addEventListener('mouseup', (e) => {
+        if (!isDrawing) return;
+        isDrawing = false;
+
+        const rect = selectionCanvas.getBoundingClientRect();
+        currentX = (e.clientX - rect.left) * (selectionCanvas.width / rect.width);
+        currentY = (e.clientY - rect.top) * (selectionCanvas.height / rect.height);
+
+        // Normalize rectangle coordinates
+        const x = Math.min(startX, currentX);
+        const y = Math.min(startY, currentY);
+        const width = Math.abs(currentX - startX);
+        const height = Math.abs(currentY - startY);
+
+        if (width > 10 && height > 10) {
+            selectedRect = { x, y, width, height };
+            validateSelectionBtn.disabled = false;
+        }
+    });
+
+    // Cancel selection
+    cancelSelectionBtn.addEventListener('click', () => {
+        hideSelectionOverlay();
+    });
+
+    // Validate selection and send for analysis
+    validateSelectionBtn.addEventListener('click', () => {
+        if (!selectedRect) {
+            console.error('No selection rectangle found');
+            return;
+        }
+
+        // Save reference to selected rectangle before hiding overlay
+        const rectToAnalyze = { ...selectedRect };
+        const canvasToAnalyze = capturedFrameCanvas;
+
+        // Hide selection overlay
+        hideSelectionOverlay();
+
+        // Show analyzing state
+        analyzeButton.disabled = true;
+        analyzeButton.classList.add('analyzing');
+        analyzeButton.textContent = '🔄 Analyse en cours...';
+        detectionsDiv.innerHTML = '<div class="analyzing-in-progress">Analyse en cours...</div>';
+
+        // Crop the image to selected rectangle
+        const croppedCanvas = document.createElement('canvas');
+        croppedCanvas.width = rectToAnalyze.width;
+        croppedCanvas.height = rectToAnalyze.height;
+        const croppedCtx = croppedCanvas.getContext('2d');
+        croppedCtx.drawImage(canvasToAnalyze,
+            rectToAnalyze.x, rectToAnalyze.y, rectToAnalyze.width, rectToAnalyze.height,
+            0, 0, rectToAnalyze.width, rectToAnalyze.height
+        );
+
+        // Convert to base64
+        const frameBase64 = croppedCanvas.toDataURL('image/jpeg', 0.8).split(',')[1];
+
+        console.log(`Sending cropped frame: ${croppedCanvas.width}x${croppedCanvas.height}, size: ${(frameBase64.length / 1024).toFixed(0)}KB`);
+
+        // Send analyze request with cropped frame to backend
+        ws.send(JSON.stringify({
+            action: 'analyze',
+            frame: frameBase64
+        }));
+
+        // Re-enable button after response (timeout as backup)
+        setTimeout(() => {
+            analyzeButton.disabled = false;
+            analyzeButton.classList.remove('analyzing');
+            analyzeButton.textContent = '🔍 Identifier les espèces';
+            isAnalyzing = false;
+        }, 10000); // 10 second timeout
     });
 
     // Detection toggle functionality

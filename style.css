@@ -306,3 +306,83 @@ input:checked + .slider:before {
 #analyze-button.analyzing {
     background: #FF9800;
 }
+
+/* Selection overlay styles */
+#selection-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#selection-canvas {
+    max-width: 90vw;
+    max-height: 80vh;
+    cursor: crosshair;
+    border: 2px solid #4CAF50;
+    box-shadow: 0 0 20px rgba(76, 175, 80, 0.5);
+}
+
+#selection-instructions {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.9);
+    padding: 15px 25px;
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    border: 2px solid #4CAF50;
+}
+
+.selection-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    justify-content: center;
+}
+
+#cancel-selection,
+#validate-selection {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#cancel-selection {
+    background: #f44336;
+    color: white;
+}
+
+#cancel-selection:hover {
+    background: #d32f2f;
+}
+
+#validate-selection {
+    background: #4CAF50;
+    color: white;
+}
+
+#validate-selection:hover {
+    background: #45a049;
+}
+
+#validate-selection:disabled {
+    background: #666;
+    cursor: not-allowed;
+    opacity: 0.5;
+}
