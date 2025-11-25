@@ -112,6 +112,8 @@ async def analyze_frame_with_claude(frame_base64):
 
 IMPORTANT : N'identifie que les oiseaux réels qui ont l'air vrais à l'image. Réagis comme un ornithologue professionnel. Si tu as un doute, ne dis rien. Tu peux en revanche, si tu es sûr de la famille ou du genre de l'oiseau, répondre quelque chose comme "Rapace indéterminé" ou "Corvidés indéterminé".
 
+IMPORTANT : les espèces que tu es susceptible de trouver sont : Mésanges charbonnière, bleue, nonnette, noire (plus rare), huppée (rare aussi), sitelle torchepot, rouge-gorge familier, pinson des arbres, pinson du nord (rare), gros bec cassenoyau (rare), tarin des aulnes (rare). Les espèces les plus fréquentes sont les mésanges charbonnières et bleue, la sitelle et la mésange nonnette sont là souvent également.
+
 GUIDE D'IDENTIFICATION - Espèces souvent confondues :
 
 MÉSANGES (attention aux détails !) :
@@ -121,7 +123,7 @@ MÉSANGES (attention aux détails !) :
 - Mésange huppée (Lophophanes cristatus) : HUPPE pointue noire et blanche très visible, dos brun/marron moyen et ventre brun/fauve clair
 - Mésange nonnette (Poecile palustris) : la mésange nonnette n'a JAMAIS de barre blanche sur les ailes. calotte noire mate, SANS bande nucale blanche, menton noir (noir très restreint), joues blanches sales, le blanc allant jusqu'à la nuque. Le noir sous le bec reste sous le bec et ne s'étend pas jusqu'à l'épaule. Très peu de noir sous le bec. Couleur dominante du dos beigne/marron clair, ventre fauve clair/beige clair
 - Si hésitation entre charbonnière et noire : cherche la tache nucale blanche (noire) ou la bande ventrale plus ou moins large (charbonnière)
-
+- Ne confond pas une mésange avec la sitelle torchepot. La sitelle a une barre noire bien visible en travers de la face, passant par les yeux, comme un masque et n'a JAMAIS la calotte noire. La mésange bleue a aussi une barre sur les yeux mais a la calotte bleutée et le ventre jaune. De plus elle a une ligne noire à la base du cou ce que n'a JAMAIS la sitelle. Idem pour une petite barre alaire blanche chez la mésange bleue, totalement absente chez la sitelle.
 CORVIDÉ OU MERLE
 - Le merle NOIR mâle a TOUJOURS un bec jaune. Les corvidés n'ont JAMAIS le bec jaune (sauf le chocard à bec jaune mais dont le bec est COURBÉ)
 
