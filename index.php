@@ -38,7 +38,11 @@
 <script>
     // Stream vidéo
     const video = document.getElementById('video');
-    const streamUrl = "/live/camera/index.m3u8";
+
+    // Détecter si on est en local (port 8888 pour PHP ou 8080 pour nginx direct) ou en production (via nginx reverse proxy)
+    const isLocal = ['8080', '8888'].includes(window.location.port);
+    const streamUrl = isLocal ? "http://localhost:8080/live/camera/index.m3u8" : "/live/camera/index.m3u8";
+
     const detectionsDiv = document.getElementById('detections');
     const statusDiv = document.getElementById('detection-status');
     const statusText = document.getElementById('status-text');
@@ -101,10 +105,18 @@
             return;
         }
 
-        // Use relative path that will work both in HTTP and HTTPS
-        const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-        const wsHost = window.location.host;
-        ws = new WebSocket(`${wsProtocol}//${wsHost}/ws`);
+        // Use different URL for local vs production
+        let wsUrl;
+        if (isLocal) {
+            // En local, connexion directe au port 8765
+            wsUrl = 'ws://localhost:8765';
+        } else {
+            // En production, via nginx reverse proxy
+            const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsHost = window.location.host;
+            wsUrl = `${wsProtocol}//${wsHost}/ws`;
+        }
+        ws = new WebSocket(wsUrl);
 
         ws.onopen = () => {
             console.log('Connected to bird detection service');
