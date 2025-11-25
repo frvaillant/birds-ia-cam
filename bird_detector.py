@@ -110,7 +110,34 @@ async def analyze_frame_with_claude(frame_base64):
                             "type": "text",
                             "text": """Analyse cette image et identifie tous les oiseaux présents.
 
-IMPORTANT : N'dentifie que les oiseaux réels qui ont l'air vrais à l'image. Réagis comme un ornithologue professionnel. Si tu as un doute, ne dis rien. Tu peux en revanche, si tu es sur de la famille ou du genre de l'oiseau, répondre quelque chose comme "Rapace indeterminé" ou "Corvidés indéterminé".
+IMPORTANT : N'identifie que les oiseaux réels qui ont l'air vrais à l'image. Réagis comme un ornithologue professionnel. Si tu as un doute, ne dis rien. Tu peux en revanche, si tu es sûr de la famille ou du genre de l'oiseau, répondre quelque chose comme "Rapace indéterminé" ou "Corvidés indéterminé".
+
+GUIDE D'IDENTIFICATION - Espèces souvent confondues :
+
+MÉSANGES (attention aux détails !) :
+- Mésange charbonnière (Parus major) : bande ventrale noire LARGE (en tous cas visible) et continue du menton au bas-ventre, joues blanches éclatantes, grande taille (14-15cm), calotte noire brillante, le ventre a clairement des teintes jaunes et le dos, notamment dans le haut, des teintes vert/jaune/olive
+- Mésange noire (Periparus ater) : TACHE BLANCHE sur la NUQUE (derrière la tête) - c'est la clé !, bande ventrale noire fine ou absente mais généralement absente, plus petite (11cm), calotte noire mate, pas de jaune sur le ventre, dos à dominante clairement grise
+- Mésange bleue (Cyanistes caeruleus) : calotte bleue vif, ailes et queue bleues, joues blanches avec trait noir sur l'œil
+- Mésange huppée (Lophophanes cristatus) : HUPPE pointue noire et blanche très visible, dos brun/marron moyen et ventre brun/fauve clair
+- Mésange nonnette (Poecile palustris) : calotte noire mate, SANS bande nucale blanche, menton noir, joues blanches sales
+- Si hésitation entre charbonnière et noire : cherche la tache nucale blanche (noire) ou la bande ventrale plus ou moins large (charbonnière)
+
+MOINEAUX :
+- Moineau domestique mâle (Passer domesticus) : calotte grise, joue blanche, bavette noire, dos brun strié
+- Moineau domestique femelle : entièrement brun-beige strié, sourcil clair
+- Moineau friquet (Passer montanus) : calotte MARRON (pas grise), tache noire sur joue blanche, plus petit
+- Si hésitation : le friquet a TOUJOURS une tache noire sur la joue, le domestique mâle a une calotte grise
+
+PINSONS :
+- Pinson des arbres (Fringilla coelebs) : poitrine rosée, double barre alaire blanche bien visible
+- Verdier d'Europe (Chloris chloris) : corps vert-jaune, bec fort et conique
+- Chardonneret élégant (Carduelis carduelis) : masque facial rouge vif, ailes noires avec barre jaune
+
+ROUGES-GORGES vs ROUGEQUEUES :
+- Rouge-gorge (Erithacus rubecula) : plastron orange-roux sur poitrine ET face
+- Rougequeue noir (Phoenicurus ochruros) : queue rousse en mouvement, corps gris-noir, mâle avec bavette noire
+
+En cas de doute entre deux espèces proches, indique "Mésange sp." ou "Moineau sp." avec mention des deux possibilités dans la description.
 
 Pour chaque oiseau détecté, fournis :
 1. Nom de l'espèce (commun en français et scientifique)
