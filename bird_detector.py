@@ -122,6 +122,9 @@ MÉSANGES (attention aux détails !) :
 - Mésange nonnette (Poecile palustris) : la mésange nonnette n'a JAMAIS de barre blanche sur les ailes. calotte noire mate, SANS bande nucale blanche, menton noir (noir très restreint), joues blanches sales, le blanc allant jusqu'à la nuque. Le noir sous le bec reste sous le bec et ne s'étend pas jusqu'à l'épaule. Très peu de noir sous le bec. Couleur dominante du dos beigne/marron clair, ventre fauve clair/beige clair
 - Si hésitation entre charbonnière et noire : cherche la tache nucale blanche (noire) ou la bande ventrale plus ou moins large (charbonnière)
 
+CORVIDÉ OU MERLE
+- Le merle NOIR mâle a TOUJOURS un bec jaune. Les corvidés n'ont JAMAIS le bec jaune (sauf le chocard à bec jaune mais dont le bec est COURBÉ)
+
 MOINEAUX :
 - Moineau domestique mâle (Passer domesticus) : calotte grise, joue blanche, bavette noire, dos brun strié
 - Moineau domestique femelle : entièrement brun-beige strié, sourcil clair
