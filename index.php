@@ -11,7 +11,7 @@
 <div id="video-container">
     <video id="video" controls autoplay></video>
 
-    <button id="analyze-button">🔍 Identifier les espèces</button>
+    <button id="analyze-button">🔍 Identifier un oiseau</button>
 
     <!-- Selection overlay for drawing rectangle -->
     <div id="selection-overlay" class="hidden">
@@ -188,7 +188,7 @@
             // Show UI elements and reset detections message
             document.getElementById('analyze-button').classList.remove('hidden');
             document.getElementById('detection-overlay').classList.remove('hidden');
-            detectionsDiv.innerHTML = '<div class="no-detection">Cliquer sur "Identifier les espèces" pour tenter de trouver leur nom</div>';
+            detectionsDiv.innerHTML = '<div class="no-detection">Cliquer sur "Identifier un oiseau" pour tenter de trouver leur nom</div>';
         };
 
         ws.onmessage = (event) => {
@@ -238,7 +238,7 @@
         // Re-enable analyze button
         analyzeButton.disabled = false;
         analyzeButton.classList.remove('analyzing');
-        analyzeButton.textContent = '🔍 Identifier les espèces';
+        analyzeButton.textContent = '🔍 Identifier un oiseau';
 
         // Delete all captures after displaying results (whether birds found or not)
         if (ws && ws.readyState === WebSocket.OPEN) {
@@ -313,7 +313,7 @@
     }
 
     function resetDetections() {
-        detectionsDiv.innerHTML = '<div class="no-detection">Cliquer sur "Identifier les espèces" pour tenter de trouver leur nom</div>';
+        detectionsDiv.innerHTML = '<div class="no-detection">Cliquer sur "Identifier un oiseau" pour tenter de trouver leur nom</div>';
 
         // Delete previous captures from server
         if (ws && ws.readyState === WebSocket.OPEN) {
@@ -485,7 +485,7 @@
         setTimeout(() => {
             analyzeButton.disabled = false;
             analyzeButton.classList.remove('analyzing');
-            analyzeButton.textContent = '🔍 Identifier les espèces';
+            analyzeButton.textContent = '🔍 Identifier un oiseau';
             isAnalyzing = false;
         }, 10000); // 10 second timeout
     });
@@ -502,7 +502,7 @@
             // Show detection UI
             analyzeButtonEl.classList.remove('hidden');
             detectionOverlay.classList.remove('hidden');
-            detectionsDiv.innerHTML = '<div class="no-detection">Cliquer sur "Identifier les espèces" pour tenter de trouver leur nom</div>';
+            detectionsDiv.innerHTML = '<div class="no-detection">Cliquer sur "Identifier un oiseau" pour tenter de trouver leur nom</div>';
 
             // Update status text if connected
             if (ws && ws.readyState === WebSocket.OPEN) {
@@ -522,7 +522,7 @@
     connectWebSocket();
 
     // Initially show message to click button
-    detectionsDiv.innerHTML = '<div class="no-detection">Cliquer sur "Identifier les espèces" pour tenter de trouver leur nom</div>';
+    detectionsDiv.innerHTML = '<div class="no-detection">Cliquer sur "Identifier un oiseau" pour tenter de trouver leur nom</div>';
 </script>
 
 </body>
