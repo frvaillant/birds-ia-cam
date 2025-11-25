@@ -117,15 +117,18 @@ IMPORTANT : les espèces que tu es susceptible de trouver sont : Mésanges charb
 GUIDE D'IDENTIFICATION - Espèces souvent confondues :
 
 MÉSANGES (attention aux détails !) :
-- Mésange charbonnière (Parus major) : bande ventrale noire LARGE (en tous cas visible) et continue du menton au bas-ventre, joues blanches éclatantes, grande taille (14-15cm), calotte noire brillante, le ventre a clairement des teintes jaunes et le dos, notamment dans le haut, des teintes vert/jaune/olive
+- Mésange charbonnière (Parus major) : Tache blache très visible sur la joue et ENTIEREMENT entourée de noir, bande ventrale noire LARGE (en tous cas visible) et continue du menton au bas-ventre, joues blanches éclatantes, grande taille (14-15cm), calotte noire brillante, le ventre a clairement des teintes jaunes et le dos, notamment dans le haut, des teintes vert/jaune/olive
 - Mésange noire (Periparus ater) : TACHE BLANCHE sur la NUQUE (derrière la tête), la mésange noire a TOUJOURS une barre blanche sur les ailes, bande ventrale noire fine ou ABSENTE mais généralement absente, plus petite (11cm), calotte noire mate, PAS DE JAUNE SUR LE VENTRE, dos à dominante clairement GRISE : on dirait un dos noir et blanc, pas de couleurs spécifique. Le noir du menton s'étend jusqu'à l'épaule et la base du cou sur les côtés. Zone de noir sous lec importante.
 - Mésange bleue (Cyanistes caeruleus) : calotte bleue vif, ailes et queue bleues, joues blanches avec trait noir sur l'œil
 - Mésange huppée (Lophophanes cristatus) : HUPPE pointue noire et blanche très visible, dos brun/marron moyen et ventre brun/fauve clair
 - Mésange nonnette (Poecile palustris) : la mésange nonnette n'a JAMAIS de barre blanche sur les ailes. calotte noire mate, SANS bande nucale blanche, menton noir (noir très restreint), joues blanches sales, le blanc allant jusqu'à la nuque. Le noir sous le bec reste sous le bec et ne s'étend pas jusqu'à l'épaule. Très peu de noir sous le bec. Couleur dominante du dos beigne/marron clair, ventre fauve clair/beige clair. Le noir sur la tête descend sur la nuque mais elle n'a JAMAIS de noir à la base du cou sur les côtés.
 - Si hésitation entre charbonnière et noire : cherche la tache nucale blanche (noire) ou la bande ventrale plus ou moins large (charbonnière)
-- Ne confond pas une mésange avec la sitelle torchepot. La sitelle a une barre noire bien visible en travers de la face, passant par les yeux, comme un masque et n'a JAMAIS la calotte noire. La mésange bleue a aussi une barre sur les yeux mais a la calotte bleutée et le ventre jaune. De plus elle a une ligne noire à la base du cou ce que n'a JAMAIS la sitelle. Idem pour une petite barre alaire blanche chez la mésange bleue, totalement absente chez la sitelle.
+- Ne confond pas une mésange avec la sitelle torchepot. La sitelle n'a JAMAIS la calotte noire, elle a le ventre clairement orangé et le dos gris ardoise, elle a une barre noire bien visible en travers de la face, passant par les yeux, comme un masque et n'a JAMAIS la calotte noire. La mésange bleue a aussi une barre sur les yeux mais a la calotte bleutée et le ventre jaune. De plus elle a une ligne noire à la base du cou ce que n'a JAMAIS la sitelle. Idem pour une petite barre alaire blanche chez la mésange bleue, totalement absente chez la sitelle.
+- Si tu hésites entre mésange nonnette et mésange noire, sache qu'il y a 95% de chances que ce soit une nonnette.
+- Si tu ne vois pas de jaune, ce n'est ni une mésange bleue, ni une mésange charbonnière.
+
 CORVIDÉ OU MERLE
-- Le merle NOIR mâle a TOUJOURS un bec jaune. Les corvidés n'ont JAMAIS le bec jaune (sauf le chocard à bec jaune mais dont le bec est COURBÉ)
+- Le merle NOIR mâle a TOUJOURS un bec jaune. Les corvidés n'ont JAMAIS le bec jaune (sauf le chocard à bec jaune mais dont le bec est COURBÉ et surtout il n'y en a pas ici)
 
 MOINEAUX :
 - Moineau domestique mâle (Passer domesticus) : calotte grise, joue blanche, bavette noire, dos brun strié
