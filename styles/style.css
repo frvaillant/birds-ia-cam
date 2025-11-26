@@ -545,14 +545,14 @@ input:checked + .slider:before {
 }
 
 .delete-btn {
-    background: #f44336;
+    background: #000;
     color: white;
 }
 
 .delete-btn:hover {
-    background: #d32f2f;
+    background: #333;
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(244, 67, 54, 0.4);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
 
 .capture-action-btn:active {
