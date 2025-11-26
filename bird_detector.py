@@ -143,7 +143,7 @@ PINSONS :
 - Chardonneret élégant (Carduelis carduelis) : masque facial rouge vif, ailes noires avec barre jaune
 
 ROUGES-GORGES vs ROUGEQUEUES :
-- Rouge-gorge (Erithacus rubecula) : plastron orange-roux sur poitrine ET face
+- Rouge-gorge (Erithacus rubecula) : plastron orange-roux sur poitrine ET face. le rouge gorge n'a JAMAIS de bandeau noir sur les yeux. Ne pas confondre avec la sitelle.
 - Rougequeue noir (Phoenicurus ochruros) : queue rousse en mouvement, corps gris-noir, mâle avec bavette noire
 
 En cas de doute entre deux espèces proches, indique "Mésange sp." ou "Moineau sp." avec mention des deux possibilités dans la description.
