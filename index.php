@@ -26,23 +26,24 @@
     </div>
 
     <div id="detection-overlay">
-        <div class="overlay-title">🦅 Identification</div>
+        <div class="overlay-header">
+            <div class="overlay-title">🦅 Identification</div>
+            <div id="detection-status" class="detection-status status-inactive">
+                <div style="display: flex; align-items: center; gap: 6px;">
+                    <span class="status-dot"></span>
+                    <span id="status-text">Démarrage...</span>
+                </div>
+                <label class="detection-toggle">
+                    <label class="switch">
+                        <input type="checkbox" id="detection-toggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </label>
+            </div>
+        </div>
         <div id="detections">
             <div class="no-detection">Connection au service d'analyse...</div>
         </div>
-    </div>
-
-    <div id="detection-status" class="detection-status status-inactive">
-        <div style="display: flex; align-items: center; gap: 6px;">
-            <span class="status-dot"></span>
-            <span id="status-text">Démarrage...</span>
-        </div>
-        <label class="detection-toggle">
-            <label class="switch">
-                <input type="checkbox" id="detection-toggle" checked>
-                <span class="slider"></span>
-            </label>
-        </label>
     </div>
 </div>
 
