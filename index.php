@@ -225,7 +225,8 @@
 
             // Show UI elements and reset detections message
             document.getElementById('analyze-button').classList.remove('hidden');
-            document.getElementById('detection-overlay').classList.remove('hidden');
+            document.querySelector('.overlay-title').classList.remove('hidden');
+            detectionsDiv.classList.remove('hidden');
             detectionsDiv.innerHTML = '<div class="no-detection">Cliquer sur "Identifier un oiseau" pour tenter de trouver leur nom</div>';
         };
 
@@ -250,7 +251,8 @@
                 detectionToggle.checked = false;
                 detectionToggle.disabled = true;
                 document.getElementById('analyze-button').classList.add('hidden');
-                document.getElementById('detection-overlay').classList.add('hidden');
+                document.querySelector('.overlay-title').classList.add('hidden');
+                detectionsDiv.classList.add('hidden');
             }
 
             // Try to reconnect every 5 seconds (only if not already reconnecting)
@@ -556,7 +558,7 @@
     // Detection toggle functionality
     const detectionToggle = document.getElementById('detection-toggle');
     const analyzeButtonEl = document.getElementById('analyze-button');
-    const detectionOverlay = document.getElementById('detection-overlay');
+    const overlayTitle = document.querySelector('.overlay-title');
 
     detectionToggle.addEventListener('change', (e) => {
         const isEnabled = e.target.checked;
@@ -564,7 +566,8 @@
         if (isEnabled) {
             // Show detection UI
             analyzeButtonEl.classList.remove('hidden');
-            detectionOverlay.classList.remove('hidden');
+            overlayTitle.classList.remove('hidden');
+            detectionsDiv.classList.remove('hidden');
             detectionsDiv.innerHTML = '<div class="no-detection">Cliquer sur "Identifier un oiseau" pour tenter de trouver leur nom</div>';
 
             // Update status text if connected
@@ -572,9 +575,10 @@
                 statusText.textContent = 'Detection Active';
             }
         } else {
-            // Hide detection UI
+            // Hide detection UI (but keep the status/switch visible)
             analyzeButtonEl.classList.add('hidden');
-            detectionOverlay.classList.add('hidden');
+            overlayTitle.classList.add('hidden');
+            detectionsDiv.classList.add('hidden');
 
             // Update status text
             statusText.textContent = 'Détection désactivée';
