@@ -617,6 +617,26 @@
             fullscreenButton.title = 'Plein écran';
         }
     });
+
+    // Position fullscreen button at bottom-right of actual video element
+    function positionFullscreenButton() {
+        const videoRect = video.getBoundingClientRect();
+        const containerRect = videoContainer.getBoundingClientRect();
+
+        // Calculate position relative to container
+        const rightOffset = containerRect.right - videoRect.right + 10;
+        const bottomOffset = containerRect.bottom - videoRect.bottom + 10;
+
+        fullscreenButton.style.right = rightOffset + 'px';
+        fullscreenButton.style.bottom = bottomOffset + 'px';
+    }
+
+    // Position button on load and when video size changes
+    video.addEventListener('loadedmetadata', positionFullscreenButton);
+    window.addEventListener('resize', positionFullscreenButton);
+
+    // Initial positioning
+    setTimeout(positionFullscreenButton, 100);
 </script>
 
 </body>
