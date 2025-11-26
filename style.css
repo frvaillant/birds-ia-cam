@@ -23,10 +23,9 @@ body {
 }
 
 video {
-    max-width: 100%;
-    max-height: 100%;
-    width: auto;
-    height: auto;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
     border: none;
     display: block;
 }
