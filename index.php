@@ -11,7 +11,7 @@
 <div id="video-container">
     <video id="video" controls autoplay muted playsinline></video>
 
-    <button id="analyze-button">🔍 Identifier un oiseau</button>
+    <button id="analyze-button">📷 Identifier un oiseau</button>
 
     <!-- Selection overlay for drawing rectangle -->
     <div id="selection-overlay" class="hidden">
@@ -278,7 +278,7 @@
         // Re-enable analyze button
         analyzeButton.disabled = false;
         analyzeButton.classList.remove('analyzing');
-        analyzeButton.textContent = '🔍 Identifier un oiseau';
+        analyzeButton.textContent = '📷 Identifier un oiseau';
 
         // Delete all captures after displaying results (whether birds found or not)
         if (ws && ws.readyState === WebSocket.OPEN) {
@@ -550,7 +550,7 @@
         setTimeout(() => {
             analyzeButton.disabled = false;
             analyzeButton.classList.remove('analyzing');
-            analyzeButton.textContent = '🔍 Identifier un oiseau';
+            analyzeButton.textContent = '📷 Identifier un oiseau';
             isAnalyzing = false;
         }, 10000); // 10 second timeout
     });
