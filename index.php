@@ -9,7 +9,7 @@
 <body>
 
 <div id="video-container">
-    <video id="video" controls autoplay muted playsinline></video>
+    <video id="video" autoplay muted playsinline></video>
 
     <button id="analyze-button">📷 Identifier un oiseau</button>
 
