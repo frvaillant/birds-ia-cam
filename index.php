@@ -13,6 +13,8 @@
 
     <button id="analyze-button">📷 Identifier un oiseau</button>
 
+    <button id="fullscreen-button" title="Plein écran">⛶</button>
+
     <!-- Selection overlay for drawing rectangle -->
     <div id="selection-overlay" class="hidden">
         <canvas id="selection-canvas"></canvas>
@@ -590,6 +592,31 @@
 
     // Initially show message to click button
     detectionsDiv.innerHTML = '<div class="no-detection">Cliquer sur "Identifier un oiseau" pour tenter de trouver leur nom</div>';
+
+    // Fullscreen button functionality
+    const fullscreenButton = document.getElementById('fullscreen-button');
+    const videoContainer = document.getElementById('video-container');
+
+    fullscreenButton.addEventListener('click', () => {
+        if (document.fullscreenElement) {
+            document.exitFullscreen();
+        } else {
+            videoContainer.requestFullscreen().catch(err => {
+                console.error('Error attempting to enable fullscreen:', err);
+            });
+        }
+    });
+
+    // Update button icon when fullscreen state changes
+    document.addEventListener('fullscreenchange', () => {
+        if (document.fullscreenElement) {
+            fullscreenButton.textContent = '⛶'; // Exit fullscreen icon
+            fullscreenButton.title = 'Quitter le plein écran';
+        } else {
+            fullscreenButton.textContent = '⛶';
+            fullscreenButton.title = 'Plein écran';
+        }
+    });
 </script>
 
 </body>
