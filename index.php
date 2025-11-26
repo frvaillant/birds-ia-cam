@@ -19,7 +19,12 @@
     <div id="selection-overlay" class="hidden">
         <canvas id="selection-canvas"></canvas>
         <div id="selection-instructions">
-            Dessinez un rectangle autour de l'oiseau à identifier
+            <p>
+                Dessinez un rectangle autour de l'oiseau à identifier
+            </p>
+            <p class="small-text">
+                Privilégiez les moments où les oiseaux sont au premier plan et de profil
+            </p>
             <div class="selection-buttons">
                 <button id="cancel-selection">Annuler</button>
                 <button id="validate-selection" disabled>Analyser</button>
