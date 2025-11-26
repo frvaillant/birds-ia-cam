@@ -117,7 +117,7 @@ IMPORTANT : les espèces que tu es susceptible de trouver sont : Mésanges charb
 GUIDE D'IDENTIFICATION - Espèces souvent confondues :
 
 MÉSANGES (attention aux détails !) :
-- Mésange charbonnière (Parus major) : Tache blache très visible sur la joue et ENTIEREMENT entourée de noir, bande ventrale noire LARGE (en tous cas visible) et continue du menton au bas-ventre, joues blanches éclatantes, grande taille (14-15cm), calotte noire brillante, le ventre a clairement des teintes jaunes et le dos, notamment dans le haut, des teintes vert/jaune/olive
+- Mésange charbonnière (Parus major) : Tache blache très visible sur la joue et ENTIEREMENT entourée de noir, bande ventrale noire LARGE (en tous cas visible) et continue du menton au bas-ventre, joues blanches éclatantes, grande taille (14-15cm), calotte noire brillante, le ventre a clairement des teintes jaunes et le dos, notamment dans le haut, des teintes vert/jaune/olive. n'a JAMAIS de bleu sur le dessus de la tête. n'a JAMAIS de barre noire sur les yeux.
 - Mésange noire (Periparus ater) : TACHE BLANCHE sur la NUQUE (derrière la tête), la mésange noire a TOUJOURS une barre blanche sur les ailes, bande ventrale noire fine ou ABSENTE mais généralement absente, plus petite (11cm), calotte noire mate, PAS DE JAUNE SUR LE VENTRE, dos à dominante clairement GRISE : on dirait un dos noir et blanc, pas de couleurs spécifique. Le noir du menton s'étend jusqu'à l'épaule et la base du cou sur les côtés. Zone de noir sous lec importante.
 - Mésange bleue (Cyanistes caeruleus) : calotte bleue vif, ailes et queue bleues, joues blanches avec trait noir sur l'œil
 - Mésange huppée (Lophophanes cristatus) : HUPPE pointue noire et blanche très visible, dos brun/marron moyen et ventre brun/fauve clair
