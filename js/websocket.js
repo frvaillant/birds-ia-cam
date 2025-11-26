@@ -49,13 +49,8 @@ function connectWebSocket() {
         const detectionToggle = document.getElementById('detection-toggle');
         detectionToggle.disabled = false;
 
-        // Automatically turn on detection when service comes online
-        detectionToggle.checked = true;
-
-        // Show UI elements and reset detections message
-        showDetectionUI();
-        const detectionsDiv = document.getElementById('detections');
-        detectionsDiv.innerHTML = '<div class="no-detection">Cliquer sur "Identifier un oiseau" pour tenter de trouver leur nom</div>';
+        // Keep detection off by default - user needs to enable it manually
+        // Don't show UI elements until user enables detection
     };
 
     ws.onmessage = (event) => {

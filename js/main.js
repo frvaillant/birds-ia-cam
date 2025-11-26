@@ -15,12 +15,17 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeCanvasDrawing();
     initializeSelectionButtons();
 
+    // Initialize capture button
+    initializeCaptureButton();
+
     // Initialize fullscreen functionality
     initializeFullscreen();
 
-    // Set initial message
+    // Set initial state - detection is off by default
+    hideDetectionUI();
+
     const detectionsDiv = document.getElementById('detections');
-    detectionsDiv.innerHTML = '<div class="no-detection">Cliquer sur "Identifier un oiseau" pour tenter de trouver leur nom</div>';
+    detectionsDiv.innerHTML = '<div class="no-detection">Activez la détection pour identifier les oiseaux</div>';
 });
 
 function initializeDetectionToggle() {
@@ -77,10 +82,30 @@ function initializeFullscreen() {
         }
     });
 
-    // Position fullscreen button at bottom-right of video
-    video.addEventListener('loadedmetadata', positionFullscreenButton);
-    window.addEventListener('resize', positionFullscreenButton);
+    // Position buttons at bottom-right of video
+    video.addEventListener('loadedmetadata', positionVideoButtons);
+    window.addEventListener('resize', positionVideoButtons);
 
     // Initial positioning
-    setTimeout(positionFullscreenButton, 100);
+    setTimeout(positionVideoButtons, 100);
+}
+
+function positionVideoButtons() {
+    const video = document.getElementById('video');
+    const videoContainer = document.getElementById('video-container');
+    const fullscreenButton = document.getElementById('fullscreen-button');
+    const captureButton = document.getElementById('capture-button');
+
+    const videoRect = video.getBoundingClientRect();
+    const containerRect = videoContainer.getBoundingClientRect();
+
+    // Calculate position relative to container
+    const rightOffset = containerRect.right - videoRect.right + 10;
+    const bottomOffset = containerRect.bottom - videoRect.bottom + 10;
+
+    fullscreenButton.style.right = rightOffset + 'px';
+    fullscreenButton.style.bottom = bottomOffset + 'px';
+
+    captureButton.style.right = (rightOffset + 50) + 'px';
+    captureButton.style.bottom = bottomOffset + 'px';
 }

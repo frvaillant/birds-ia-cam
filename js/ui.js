@@ -136,19 +136,3 @@ function resetDetections() {
     // Delete previous captures from server
     sendWebSocketMessage({ action: 'delete_captures' });
 }
-
-function positionFullscreenButton() {
-    const video = document.getElementById('video');
-    const videoContainer = document.getElementById('video-container');
-    const fullscreenButton = document.getElementById('fullscreen-button');
-
-    const videoRect = video.getBoundingClientRect();
-    const containerRect = videoContainer.getBoundingClientRect();
-
-    // Calculate position relative to container
-    const rightOffset = containerRect.right - videoRect.right + 10;
-    const bottomOffset = containerRect.bottom - videoRect.bottom + 10;
-
-    fullscreenButton.style.right = rightOffset + 'px';
-    fullscreenButton.style.bottom = bottomOffset + 'px';
-}
