@@ -158,6 +158,9 @@ function initializeSelectionButtons() {
             0, 0, rectToAnalyze.width, rectToAnalyze.height
         );
 
+        // Apply image enhancements to improve AI recognition
+        applyImageEnhancements(croppedCanvas);
+
         // Convert to base64
         const frameBase64 = croppedCanvas.toDataURL('image/jpeg', 0.8).split(',')[1];
 
