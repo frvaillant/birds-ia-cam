@@ -34,36 +34,39 @@ video {
     position: absolute;
     top: 10px;
     right: 10px;
+    background: rgba(0, 0, 0, 0.85);
+    padding: 15px;
+    border-radius: 8px;
+    width: 350px;
+    max-height: 80%;
+    overflow-y: auto;
     font-size: 14px;
+    backdrop-filter: blur(10px);
+}
+
+#detection-overlay:has(.overlay-title.hidden) {
+    background: transparent;
+    padding: 0;
+    width: auto;
+    overflow: visible;
 }
 
 .overlay-header {
     display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
-}
-
-.overlay-header:has(.overlay-title:not(.hidden)) {
-    background: rgba(0, 0, 0, 0.85);
-    padding: 15px;
-    border-radius: 8px;
-    backdrop-filter: blur(10px);
     justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
     padding-bottom: 5px;
     border-bottom: 2px solid #4CAF50;
 }
 
+#detection-overlay:has(.overlay-title.hidden) .overlay-header {
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
 #detections {
-    background: rgba(0, 0, 0, 0.85);
-    padding: 15px;
-    padding-top: 10px;
-    border-radius: 8px;
-    width: 350px;
-    max-height: 80vh;
-    overflow-y: auto;
-    backdrop-filter: blur(10px);
 }
 
 .overlay-title {
