@@ -30,6 +30,7 @@ video {
     object-fit: contain;
     border: none;
     display: block;
+    position: relative;
 }
 
 /* Remove size limits when in fullscreen */
