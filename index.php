@@ -19,7 +19,7 @@
     <div id="selection-overlay" class="hidden">
         <canvas id="selection-canvas"></canvas>
         <div id="selection-instructions">
-            Dessinez un rectangle autour de la zone à analyser
+            Dessinez un rectangle autour de l'oiseau à identifier
             <div class="selection-buttons">
                 <button id="cancel-selection">Annuler</button>
                 <button id="validate-selection" disabled>Analyser</button>
@@ -53,6 +53,7 @@
 <script src="js/video.js"></script>
 <script src="js/websocket.js"></script>
 <script src="js/ui.js"></script>
+<script src="js/image-processing.js"></script>
 <script src="js/selection.js"></script>
 <script src="js/main.js"></script>
 
