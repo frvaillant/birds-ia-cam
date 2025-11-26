@@ -23,8 +23,8 @@ body {
 }
 
 video {
-    max-width: 1920px;
-    max-height: 1080px;
+    max-width: 1280px;
+    max-height: 720px;
     width: 100vw;
     height: 100vh;
     object-fit: contain;
